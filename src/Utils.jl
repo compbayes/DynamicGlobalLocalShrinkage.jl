@@ -10,3 +10,9 @@ end
 
 # Helper function to convert log-volatility evolution to covariance matrices
 LogVol2Covs(H) = PDMat.([diagm(exp.(H[t,:])) for t in 1:size(H,1)]) 
+
+# Helper function to convert log-volatility evolution to covariance matrices
+# in-place version
+function LogVol2Covs!(Σᵥ, H) 
+   Σᵥ .= PDMat.([diagm(exp.(H[t,:])) for t in 1:size(H,1)]) 
+end

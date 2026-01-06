@@ -14,6 +14,6 @@ include("GibbsDSP.jl")
 export update_dsp!
 
 include("Utils.jl")
-export setOffset!, LogVol2Covs
+export setOffset!, LogVol2Covs, LogVol2Covs!
 
 end

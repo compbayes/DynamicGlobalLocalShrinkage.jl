@@ -160,8 +160,8 @@ function GibbsSamplerTvRegDSP(y, X, priorSettings, modelSettings, algoSettings)
     for i in 1:(nBurn + nIter)
 
         ## Draw local level using the FFBS algorithm
-        Σₙ = LogVol2Covs(H)
-        θ = FFBS(U, Y, A, B, C, Σₑ, Σₙ, μ₀, Σ₀)
+        Σᵥ = LogVol2Covs(H)
+        θ = FFBS(U, Y, A, B, C, Σₑ, Σᵥ, μ₀, Σ₀)
 
         ## Update measurement variance
         residuals = [y[t] - X[t,:] ⋅ θ[t,:] for t in 1:T]
