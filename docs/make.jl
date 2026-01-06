@@ -50,7 +50,7 @@ makedocs(;
     authors="Mattias Villani",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://mattiasvillani.github.io/DynamicGlobalLocalShrinkage.jl",
+        canonical="https://compbayes.github.io/DynamicGlobalLocalShrinkage.jl",
         edit_link="main",
         assets=String[],
         size_threshold_warn = 1000 * 2^10,
@@ -72,6 +72,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/mattiasvillani/DynamicGlobalLocalShrinkage.jl.git",
+    repo="github.com/compbayes/DynamicGlobalLocalShrinkage.jl.git",
 )
 
