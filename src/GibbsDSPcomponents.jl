@@ -82,14 +82,14 @@ end
 
 Update log-volatility series for one parameter
 """ 
-function Update_h(ỹ, m, v, Dᵩ, ξ, ϕ, σ²ₙ, μ)
+function Update_h(ỹ, m, v, Dᵩ, ξ, ϕ, σ²ₙ, μ, upperbound = Inf)
     T = length(ỹ)
     Dᵩ[band(-1)] .= -ϕ
     invΣₓ = Diagonal(ξ/σ²ₙ)
     invΣᵥ = Diagonal(1 ./ v)
     Qh̃ = PDSparseMat(sparse( invΣᵥ + Dᵩ' * invΣₓ * Dᵩ ))
     lh̃ = invΣᵥ*(ỹ - m .- μ)
-    return rand(MvNormalCanon(lh̃, Qh̃)) .+ μ
+    return clamp.(rand(MvNormalCanon(lh̃, Qh̃)) .+ μ, -Inf, upperbound)
 end
 
 
