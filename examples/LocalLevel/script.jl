@@ -101,7 +101,7 @@ function GibbsSamplerLocalLevelDSP(y, priorSettings, modelSettings, algoSettings
     H = fill(m₀, T, p)
     H̃ = H .- μ'
     ξ = ones(T, p)
-    θ = zeros(T+1) # state evolution
+    θ = zeros(T+1,1) # state evolution
     Dᵩ = BandedMatrix(-1 => repeat([-ϕ[1]], T-1), 0 => Ones(T)) # Init D matrix for h_t
     σ²ₑ = var(y)
 
@@ -131,7 +131,7 @@ function GibbsSamplerLocalLevelDSP(y, priorSettings, modelSettings, algoSettings
 
         ## Draw local level using the FFBS algorithm
         Σᵥ = LogVol2Covs(H)
-        θ = FFBS(U, Y, A, B, C, Σₑ, Σᵥ, μ₀, Σ₀)
+        FFBS!(θ, U, Y, A, B, C, Σₑ, Σᵥ, μ₀, Σ₀)
 
         ## Update measurement variance
         residuals = y - θ[2:end];
@@ -144,8 +144,8 @@ function GibbsSamplerLocalLevelDSP(y, priorSettings, modelSettings, algoSettings
             priorSettings, mixture, Dᵩ, offset, α, β, updateσₙ)
         
         if i > nBurn
-            θpost[:, i - nBurn] = θ[:,1] # Only one parameter in this case
-            Hpost[:, i - nBurn] = H[:,1] # Only one parameter in this case
+            θpost[:, i - nBurn] .= θ
+            Hpost[:, i - nBurn] .= H
             ϕpost[:, i - nBurn] = ϕ
             σₙpost[:, i - nBurn] = σ²ₙ
             μpost[:, i - nBurn] = μ
@@ -159,7 +159,7 @@ end;
 
 # ### Run the Gibbs sampler
 
-θpost, Hpost, ϕpost, σₙpost, μpost, σ²ₑpost = GibbsSamplerLocalLevelDSP(y, 
+@time θpost, Hpost, ϕpost, σₙpost, μpost, σ²ₑpost = GibbsSamplerLocalLevelDSP(y, 
     priorSettings, modelSettings, algoSettings);
 
 # ### Plot the posterior distributions of the static parameters

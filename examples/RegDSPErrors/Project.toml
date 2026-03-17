@@ -2,6 +2,7 @@
 BandedMatrices = "aae01518-5342-5314-be14-df237901396f"
 ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+DynamicGlobalLocalShrinkage = "95f0ba86-bb51-4e4e-bc21-89dc4565d801"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 LogisticBetaDistribution = "59b8652b-d2f9-4a66-a653-7a5f669fef35"
