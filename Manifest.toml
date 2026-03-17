@@ -519,7 +519,7 @@ version = "1.7.0"
 deps = ["BandedMatrices", "Colors", "Distributions", "LinearAlgebra", "PDMats", "PolyaGammaSamplers", "SparseArrays", "Statistics", "StatsBase", "Utils"]
 path = "."
 uuid = "95f0ba86-bb51-4e4e-bc21-89dc4565d801"
-version = "1.0.1"
+version = "1.0.2"
 
 [[deps.EnumX]]
 git-tree-sha1 = "c49898e8438c828577f04b92fc9368c388ac783c"
@@ -1515,16 +1515,18 @@ version = "0.4.4"
 
 [[deps.StructUtils]]
 deps = ["Dates", "UUIDs"]
-git-tree-sha1 = "28145feabf717c5d65c1d5e09747ee7b1ff3ed13"
+git-tree-sha1 = "b4075a491f3cb24e3beea0c192959292f80e1ad8"
 uuid = "ec057cc2-7a8d-4b58-b3b3-92acb9f63b42"
-version = "2.6.3"
+version = "2.7.0"
 
     [deps.StructUtils.extensions]
     StructUtilsMeasurementsExt = ["Measurements"]
+    StructUtilsStaticArraysCoreExt = ["StaticArraysCore"]
     StructUtilsTablesExt = ["Tables"]
 
     [deps.StructUtils.weakdeps]
     Measurements = "eff96d63-e80a-5855-80a2-b1b0885c5ab7"
+    StaticArraysCore = "1e83bf80-4336-4d27-bf5d-d5a4f845583c"
     Tables = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
 
 [[deps.StyledStrings]]
