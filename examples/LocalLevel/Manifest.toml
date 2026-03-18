@@ -564,7 +564,7 @@ version = "1.7.0"
 deps = ["BandedMatrices", "Colors", "Distributions", "LinearAlgebra", "PDMats", "PolyaGammaSamplers", "SparseArrays", "Statistics", "StatsBase", "Utils"]
 path = "/home/mv/.julia/dev/DynamicGlobalLocalShrinkage"
 uuid = "95f0ba86-bb51-4e4e-bc21-89dc4565d801"
-version = "1.0.1"
+version = "1.0.3"
 
 [[deps.EnumX]]
 git-tree-sha1 = "c49898e8438c828577f04b92fc9368c388ac783c"
@@ -924,9 +924,9 @@ version = "3.1.4+0"
 
 [[deps.JuliaInterpreter]]
 deps = ["CodeTracking", "InteractiveUtils", "Random", "UUIDs"]
-git-tree-sha1 = "f5e59455236d8269b7868665c3665e8477af0e37"
+git-tree-sha1 = "3d3b79166e2a0afcf875df20db110af91ad3ab61"
 uuid = "aa1ae85d-cabe-5617-a682-6adf51b2e16a"
-version = "0.10.10"
+version = "0.10.11"
 
 [[deps.JuliaSyntaxHighlighting]]
 deps = ["StyledStrings"]
@@ -1577,9 +1577,9 @@ version = "0.7.0"
 
 [[deps.SMCsamplers]]
 deps = ["BenchmarkTools", "CSV", "Distributions", "ForwardDiff", "LaTeXStrings", "LineSearches", "LinearAlgebra", "Literate", "Measures", "Optim", "PDMats", "PProf", "Plots", "Profile", "Random", "Revise", "Statistics", "Utils"]
-git-tree-sha1 = "86d8fcbddf41ae6e73e79ded8702ce45bce88619"
+git-tree-sha1 = "2bd2d9d7309d63a11b335ebe026d9a8c2c6d97b6"
 uuid = "2328efba-24c2-4a10-a32f-a74f69d05fca"
-version = "1.1.1"
+version = "1.1.3"
 
 [[deps.Sass]]
 deps = ["libsass_jll"]
@@ -1720,9 +1720,9 @@ version = "0.4.4"
 
 [[deps.StructUtils]]
 deps = ["Dates", "UUIDs"]
-git-tree-sha1 = "b4075a491f3cb24e3beea0c192959292f80e1ad8"
+git-tree-sha1 = "fa95b3b097bcef5845c142ea2e085f1b2591e92c"
 uuid = "ec057cc2-7a8d-4b58-b3b3-92acb9f63b42"
-version = "2.7.0"
+version = "2.7.1"
 
     [deps.StructUtils.extensions]
     StructUtilsMeasurementsExt = ["Measurements"]

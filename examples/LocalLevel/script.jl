@@ -61,8 +61,8 @@ priorSettings = (
     ϕ₀ = 0.5, κ₀ = 0.3,         # Prior for ϕ ~ N(ϕ₀, κ₀²)
     m₀ = -10.0, σ₀ = 3.0,       # Prior for μ ~ N(m₀, σ₀²)
     ν₀ = 3.0, ψ₀ = 1.0,         # Prior for σ²ₙ ~ scaled inverse χ²(ν₀, ψ₀)
-    μ₀ = [0;;], Σ₀ = [10;;],    # Prior for the local mean at time t=0
-    νₑ = 3, ψ²ₑ = var(y),       # Prior for noise variance σ²ₑ ~ scaled inverse χ²(νₑ, ψ²ₑ)
+    μ₀ = [0.0;;], Σ₀ = [10.0;;],    # Prior for the local mean at time t=0
+    νₑ = 3.0, ψ²ₑ = var(y),       # Prior for noise variance σ²ₑ ~ scaled inverse χ²(νₑ, ψ²ₑ)
 ); 
 modelSettings = (
     α = 1/2,          # First shape param in Z distribution
@@ -94,7 +94,7 @@ function GibbsSamplerLocalLevelDSP(y, priorSettings, modelSettings, algoSettings
     if updateσₙ
         σ²ₙ = fill(ψ₀, p)
     else
-        σ²ₙ = fill(1, p)
+        σ²ₙ = fill(1.0, p)
     end
     
     ϕ = fill(ϕ₀, p)
@@ -112,11 +112,7 @@ function GibbsSamplerLocalLevelDSP(y, priorSettings, modelSettings, algoSettings
     σₙpost = zeros(p, nIter) # Store variance in log-volatility evolution
     μpost = zeros(p, nIter) # Store mean in log-volatility evolution
     σ²ₑpost = zeros(nIter) # Store measurement variance
-    if offsetMethod == "kowal"
-        offset = eps()*ones(T,p) # Will be overwritten later in each iteration
-    else
-        offset = offsetMethod
-    end 
+    offset = (offsetMethod == "kowal") ? eps()*ones(T,p) : fill(offsetMethod, T, p)
     P = zeros(T, nMixComp) 
     
     ## Set up state-space model
@@ -159,7 +155,7 @@ end;
 
 # ### Run the Gibbs sampler
 
-@time θpost, Hpost, ϕpost, σₙpost, μpost, σ²ₑpost = GibbsSamplerLocalLevelDSP(y, 
+θpost, Hpost, ϕpost, σₙpost, μpost, σ²ₑpost = GibbsSamplerLocalLevelDSP(y, 
     priorSettings, modelSettings, algoSettings);
 
 # ### Plot the posterior distributions of the static parameters

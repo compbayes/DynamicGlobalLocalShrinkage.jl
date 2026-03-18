@@ -109,7 +109,7 @@ function GibbsSamplerTvRegDSP(y, X, priorSettings, modelSettings, algoSettings)
     if updateσₙ
         σ²ₙ = fill(ψ₀, p)
     else
-        σ²ₙ = fill(1, p)
+        σ²ₙ = fill(1.0, p)
     end
     
     ϕ = fill(ϕ₀, p)
@@ -127,11 +127,7 @@ function GibbsSamplerTvRegDSP(y, X, priorSettings, modelSettings, algoSettings)
     σₙpost = zeros(p, nIter) # Store variance in log-volatility evolution
     μpost = zeros(p, nIter) # Store mean in log-volatility evolution
     σ²ₑpost = zeros(nIter) # Store measurement variance
-    if offsetMethod == "kowal"
-        offset = eps()*ones(T,p) # Will be overwritten later in each iteration
-    else
-        offset = offsetMethod
-    end 
+    offset = (offsetMethod == "kowal") ? eps()*ones(T,p) : fill(offsetMethod, T, p)
     P = zeros(T, nMixComp) # storage for mixture component probabilities
 
 

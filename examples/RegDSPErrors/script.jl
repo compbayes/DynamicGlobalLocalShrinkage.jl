@@ -99,7 +99,7 @@ function GibbsSamplerRegressionDSPErrors(y, X, priorSettings, modelSettings, alg
     if updateσₙ
         σ²ₙ = fill(ψ₀, p)
     else
-        σ²ₙ = fill(1, p)
+        σ²ₙ = fill(1.0, p)
     end
     
     ϕ = fill(ϕ₀, p)
@@ -115,11 +115,7 @@ function GibbsSamplerRegressionDSPErrors(y, X, priorSettings, modelSettings, alg
     ϕpost = zeros(p, nIter) # Store AR coefficients
     σₙpost = zeros(p, nIter) # Store variance in log-volatility evolution
     μpost = zeros(p, nIter) # Store mean in log-volatility evolution
-    if offsetMethod == "kowal"
-        offset = eps()*ones(T,p) # Will be overwritten later in each iteration
-    else
-        offset = offsetMethod
-    end 
+    offset = (offsetMethod == "kowal") ? eps()*ones(T,p) : fill(offsetMethod, T, p) 
     P = zeros(T, nMixComp) # Set up storage for posterior of the mixture allocation
     for i in 1:(nBurn + nIter)
 
