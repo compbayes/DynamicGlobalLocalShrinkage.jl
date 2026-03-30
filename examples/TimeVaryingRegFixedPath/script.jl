@@ -202,7 +202,7 @@ plot(p1..., p2..., p3, layout = (3,p), size = (800,600), margin = 5mm, legend = 
 plt = []
 for j = 1:p
    
-    stdev_quantiles =  quantile_multidim(θpost[:,j,:], [0.05, 0.5, 0.9]; dims = 2)
+    stdev_quantiles =  quantile_multidim(θpost[:,j,:], [0.025, 0.5, 0.975]; dims = 2)
     p2 = plot(stdev_quantiles[:,2], xlabel = "time", title = L"\theta_{t%$(j-1)}", 
         color = colors[3], label = (j==1) ? "median" : "", lw = 2)
     plot!(stdev_quantiles[:,2], label = "", fillrange = stdev_quantiles[:,1], lw = 0, 
@@ -220,7 +220,7 @@ plot(plt..., layout = (p,1), size = (800, 600), legend = :topright, margin = 5mm
 plt = []
 for j = 1:p
    
-    stdev_quantiles =  quantile_multidim(Hpost[:,j,:], [0.05, 0.5, 0.9]; dims = 2)
+    stdev_quantiles =  quantile_multidim(Hpost[:,j,:], [0.025, 0.5, 0.975]; dims = 2)
     p2 = plot(stdev_quantiles[:,2], xlabel = "time", title = L"h_{t%$j}", 
         color = colors[3], label = "", lw = 2)
     plot!(stdev_quantiles[:,2], label = "", fillrange = stdev_quantiles[:,1], lw = 0, 

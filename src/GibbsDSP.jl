@@ -22,7 +22,8 @@ mix is a named tuple with fields dist, m, v, which is the mixture distribution, 
 
 """ 
 function update_dsp!(ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prior, mix, Dᵩ, 
-        offset = eps(), α = 1/2, β = 1/2, updateσₙ = false, h_upper = Inf)
+        offset = eps(), α = 1/2, β = 1/2, updateσₙ = false, 
+        h_upper = Inf, polyaoffset = 0.0)
 
     p = size(ν, 2)
     Ỹ = log.(ν.^2 .+ offset) # Ỹ = [ỹ₁, ỹ₂,..., ỹₚ] is T × p 
@@ -33,7 +34,7 @@ function update_dsp!(ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prior, mix, Dᵩ,
 
         # Update h₁, h₂, ..., hₜ using MvNormal draw with tridiag precision matrix
         H[:,k] = Update_h(Ỹ[:,k], mix.m[S[:,k]], mix.v[S[:,k]], Dᵩ, ξ[:,k], ϕ[k], σ²ₙ[k], 
-            μ[k], h_upper)
+            μ[k], h_upper, polyaoffset)
 
         # Update Polya-Gamma variables
         ξ[:,k] = Updateξ(H[:,k], ϕ[k], σ²ₙ[k], μ[k], α, β)

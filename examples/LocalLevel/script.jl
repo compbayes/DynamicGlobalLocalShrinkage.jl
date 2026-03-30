@@ -171,7 +171,7 @@ vline!([sqrt(σ²ₑ)], color = :black, linestyle = :dash, label = "true", lw = 
 plot(p1, p2, p3, layout = (1,3), size = (800,400), legend = nothing)
 
 # ### Plot the posterior distribution of the local level evolution
-θ_quantiles = quantile_multidim(θpost, [0.05, 0.5, 0.9]; dims = 2)
+θ_quantiles = quantile_multidim(θpost, [0.025, 0.5, 0.975]; dims = 2)
 p1 = plot(θ_quantiles[:,2], xlabel = "time", 
     title = "Local level evolution, "*L"\theta_t", color = colors[3], label = "median", 
     lw = 2, legend = :bottomright)
@@ -182,7 +182,7 @@ plot!(θ_quantiles[:,2], xlabel = "time", label = "95% C.I.",
 plot!(θ, color = colors[1], label = "true", lw = 2)
 
 # ### Plot the posterior distribution of the log-volatility evolution
-stdev_quantiles =  quantile_multidim(exp.(Hpost/2), [0.05, 0.5, 0.9]; dims = 2)
+stdev_quantiles =  quantile_multidim(exp.(Hpost/2), [0.025, 0.5, 0.975]; dims = 2)
 p1 = plot(stdev_quantiles[:,2], xlabel = "time", 
     title = "Stdev innovations - "*L"\exp(h_t/2)", color = colors[3], label = "median", 
     lw = 2)
@@ -192,7 +192,7 @@ plot!(stdev_quantiles[:,2], xlabel = "time", label = "95% C.I.",
     fillrange = stdev_quantiles[:,3], lw = 0, fillalpha = 0.3, color =:gray)
 plot!(exp.(h/2), color = colors[1], label = "true", lw = 2)
 
-stdev_quantiles =  quantile_multidim(Hpost, [0.05, 0.5, 0.9]; dims = 2)
+stdev_quantiles =  quantile_multidim(Hpost, [0.025, 0.5, 0.975]; dims = 2)
 p2 = plot(stdev_quantiles[:,2], xlabel = "time", title = L"h_t", 
     color = colors[3], label = "", lw = 2)
 plot!(stdev_quantiles[:,2], label = "", fillrange = stdev_quantiles[:,1], lw = 0, 
