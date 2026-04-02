@@ -85,7 +85,7 @@ Update log-volatility series for one parameter
 function Update_h(ỹ, m, v, Dᵩ, ξ, ϕ, σ²ₙ, μ, upperbound = Inf, polyaoffset = 0.0)
     T = length(ỹ)
     Dᵩ[band(-1)] .= -ϕ
-    invΣₓ = Diagonal((ξ+polyaoffset)/σ²ₙ)
+    invΣₓ = Diagonal((ξ .+ polyaoffset)/σ²ₙ)
     invΣᵥ = Diagonal(1 ./ v)
     Qh̃ = PDSparseMat(sparse( invΣᵥ + Dᵩ' * invΣₓ * Dᵩ ))
     lh̃ = invΣᵥ*(ỹ - m .- μ)
