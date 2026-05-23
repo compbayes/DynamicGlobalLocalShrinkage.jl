@@ -124,8 +124,8 @@ function UpdateMixAlloc!(ỹ, h, mixDist, postDist)
     for (i, component) in enumerate(mixDist.components)
         postDist[:, i] = logpdf.(component, ỹ - h)
     end
-    postDist = exp.(postDist .- maximum(postDist, dims=2)) .* mixDist.prior.p'
-    postDist = postDist ./ sum(postDist, dims=2)
+    postDist .= exp.(postDist .- maximum(postDist, dims=2)) .* mixDist.prior.p'
+    postDist ./= sum(postDist, dims=2)
 
     return nComp .-
            sum(repeat(rand(T), 1, nComp) .< cumsum(postDist, dims=2), dims=2) .+ 1

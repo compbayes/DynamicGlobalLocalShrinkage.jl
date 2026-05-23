@@ -73,12 +73,13 @@ function update_dsp!(groupsize::Int, ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prio
 
     p = size(ν, 2)
     Ỹ = log.(ν .^ 2 .+ offset) # Ỹ = [ỹ₁, ỹ₂,..., ỹₚ] is Tgroup × p 
-    for k in 1:p
 
-        μ̄ = μ .+ log(groupsize)                             # group-level mean
-        ϕ̄ = ϕ .^ groupsize                                  # group-level AR coefficient
-        scalevar = @. ((1 - ϕ̄) / (1 - ϕ))^2
-        σ̄²ₙ = @. scalevar * σ²ₙ      # group-level variance in Z | ξ
+    μ̄ = μ .+ log(groupsize)                             # group-level mean
+    ϕ̄ = ϕ .^ groupsize                                  # group-level AR coefficient
+    scalevar = @. ((1 - ϕ̄) / (1 - ϕ))^2
+    σ̄²ₙ = @. scalevar * σ²ₙ      # group-level variance in Z | ξ
+
+    for k in 1:p
 
         # Update mixture allocation for log χ²₁ distribution
         S[:, k] = UpdateMixAlloc!(Ỹ[:, k], H̃[:, k] .+ μ̄[k], mix.dist, P)
