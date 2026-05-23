@@ -1,6 +1,6 @@
 name = "DynamicGlobalLocalShrinkage"
 uuid = "95f0ba86-bb51-4e4e-bc21-89dc4565d801"
-version = "1.1.0"
+version = "1.1.1"
 authors = ["Mattias Villani"]
 
 [deps]
