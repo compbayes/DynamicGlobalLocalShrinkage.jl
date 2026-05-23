@@ -557,7 +557,7 @@ version = "1.7.0"
 deps = ["BandedMatrices", "Colors", "Distributions", "LinearAlgebra", "PDMats", "PolyaGammaSamplers", "SparseArrays", "Statistics", "StatsBase", "Utils"]
 path = "/home/mv/.julia/dev/DynamicGlobalLocalShrinkage"
 uuid = "95f0ba86-bb51-4e4e-bc21-89dc4565d801"
-version = "1.0.6"
+version = "1.1.1"
 
 [[deps.EnumX]]
 git-tree-sha1 = "c49898e8438c828577f04b92fc9368c388ac783c"
@@ -1799,9 +1799,9 @@ version = "0.2.0"
 
 [[deps.Utils]]
 deps = ["AdvancedMH", "ColorSchemes", "DataFrames", "Distances", "Distributions", "ForwardDiff", "KernelDensity", "LaTeXStrings", "LinearAlgebra", "Loess", "LogExpFunctions", "Optim", "PDMats", "Plots", "ProgressMeter", "Random", "SpecialFunctions", "Statistics", "StatsPlots"]
-git-tree-sha1 = "7e410cce239843a09d6394610479fda98f87ff24"
+git-tree-sha1 = "737b986a23693d0ce3b782d2b31680f9cac557b0"
 uuid = "a6a4a4df-ba9f-45e9-bafc-bec3296762b9"
-version = "1.1.0"
+version = "1.1.1"
 
 [[deps.Vulkan_Loader_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Wayland_jll", "Xorg_libX11_jll", "Xorg_libXrandr_jll", "xkbcommon_jll"]
