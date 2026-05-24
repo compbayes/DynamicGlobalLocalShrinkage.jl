@@ -33,8 +33,8 @@ function update_dsp!(ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prior, mix, Dᵩ,
         S[:, k] = UpdateMixAlloc!(Ỹ[:, k], H̃[:, k] .+ μ[k], mix.dist, P)
 
         # Update h₁, h₂, ..., hₜ using MvNormal draw with tridiag precision matrix
-        H[:, k] = Update_h(Ỹ[:, k], mix.m[S[:, k]], mix.v[S[:, k]], Dᵩ, ξ[:, k], ϕ[k], σ²ₙ[k],
-            μ[k], h_upper, polyaoffset)
+        H[:, k] = Update_h(Ỹ[:, k], mix.m[S[:, k]], mix.v[S[:, k]], Dᵩ, ξ[:, k], ϕ[k],
+            σ²ₙ[k], μ[k], h_upper, polyaoffset)
 
         # Update Polya-Gamma variables
         ξ[:, k] = Updateξ(H[:, k], ϕ[k], σ²ₙ[k], μ[k], α, β)
@@ -58,7 +58,7 @@ end
 # Log conditional posterior for ϕ under grouped likelihood, used in slice sampling
 function logpost_ϕ(ϕ, h, ξ, μ̄, σ²ₙ, ϕ₀, κ₀, groupsize)
     ϕ̄ = ϕ^groupsize # scalar here
-    scalevar = ((1 - ϕ̄) / (1 - ϕ))^2
+    scalevar = ((1 - ϕ̄^2) / (1 - ϕ^2))^2
     σ̄²ₙ = scalevar * σ²ₙ
     mean_h = μ̄ .+ ϕ̄ .* (h[1:end-1] .- μ̄)
     stdev_h = sqrt.(σ̄²ₙ ./ ξ[2:end])
@@ -76,8 +76,8 @@ function update_dsp!(groupsize::Int, ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prio
 
     μ̄ = μ .+ log(groupsize)                             # group-level mean
     ϕ̄ = ϕ .^ groupsize                                  # group-level AR coefficient
-    scalevar = @. ((1 - ϕ̄) / (1 - ϕ))^2
-    σ̄²ₙ = @. scalevar * σ²ₙ      # group-level variance in Z | ξ
+    scalevar = @. ((1 - ϕ̄^2) / (1 - ϕ^2))^2
+    σ̄²ₙ = scalevar .* σ²ₙ      # group-level variance in Z | ξ
 
     for k in 1:p
 
