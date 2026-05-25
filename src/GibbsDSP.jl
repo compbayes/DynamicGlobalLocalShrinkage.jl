@@ -88,22 +88,29 @@ function update_dsp!(groupsize::Int, ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prio
         H[:, k] = Update_h(Ỹ[:, k], mix.m[S[:, k]], mix.v[S[:, k]], Dᵩ, ξ[:, k], ϕ̄[k],
             σ̄²ₙ[k], μ̄[k], h_upper, polyaoffset)
 
-        # Update Polya-Gamma variables
+        # Update Polya-Gamma variables # TODO: this must be generalized to unequal groups
         ξ[:, k] = Updateξ(H[:, k], ϕ̄[k], σ̄²ₙ[k], μ̄[k], α, β)
 
         # Update the AR coefficient in the logvariance evolution
         ϕ[k] = slice_sample_bounded(ϕ -> logpost_ϕ(ϕ, H[:, k], ξ[:, k], μ̄[k], σ²ₙ[k],
                 prior.ϕ₀, prior.κ₀, groupsize), ϕ[k]; lower=-0.999, upper=0.999)
 
+        ϕ̄ = ϕ .^ groupsize
+        scalevar = @. ((1 - ϕ̄^2) / (1 - ϕ^2))^2
+
         # Update the variance in the logvariance evolution
         if updateσₙ
             σ²ₙ[k] = Updateσ²ₙ(H[:, k], ξ[:, k] / scalevar[k], ϕ̄[k], μ̄[k],
                 prior.ν₀, prior.ψ₀)
         end
+        σ̄²ₙ = scalevar .* σ²ₙ
 
         # Update the mean in the logvariance evolution - centered parameterization
-        μ[k] = Updateμ(H[:, k], ξ[:, k], ϕ[k], σ²ₙ[k], prior.m₀, prior.σ₀)
-        H̃[:, k] = H[:, k] .- μ[k] # Transform back to non-centered parameterization
+        μ[k] = Updateμ(H[:, k] .- log(groupsize), ξ[:, k], ϕ̄[k], σ̄²ₙ[k],
+            prior.m₀, prior.σ₀)
+        μ̄[k] = μ[k] + log(groupsize)
+
+        H̃[:, k] = H[:, k] .- μ̄[k] # Transform back to non-centered parameterization
     end
 
     return nothing
