@@ -34,7 +34,7 @@ processes = let literatejl = joinpath(@__DIR__, "literate.jl")
                 stdin=devnull,
                 stdout=devnull,
                 stderr=stderr,
-            );  
+            );
             wait=false,
         )::Base.Process
     end
@@ -49,7 +49,7 @@ Pkg.activate("./docs/")
 using Documenter
 using DynamicGlobalLocalShrinkage
 
-DocMeta.setdocmeta!(DynamicGlobalLocalShrinkage, :DocTestSetup, 
+DocMeta.setdocmeta!(DynamicGlobalLocalShrinkage, :DocTestSetup,
     :(using DynamicGlobalLocalShrinkage); recursive=true)
 
 makedocs(;
@@ -61,14 +61,15 @@ makedocs(;
         canonical="https://compbayes.github.io/DynamicGlobalLocalShrinkage.jl",
         edit_link="main",
         assets=String[],
-        size_threshold_warn = 1000 * 2^10,
-        size_threshold = 1500 * 2^10, # 1000 KiB determines the maximal html size in KiB
+        size_threshold_warn=1000 * 2^10,
+        size_threshold=1500 * 2^10, # 1000 KiB determines the maximal html size in KiB
     ),
-    
 
-    pages = [
+
+    pages=[
         "Home" => "index.md",
         "Sampling Updates" => "samplingUpdates.md",
+        "Homoscedastic Updates" => "homosamplers.md",
         "Index" => "functionindex.md",
         "Examples" => [
             map(
