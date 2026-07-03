@@ -13,6 +13,9 @@ export SetUpLogChi2Mixture
 include("GibbsDSP.jl")
 export update_dsp!
 
+include("HomoSamplers.jl")
+export update_homoscedastic_uni!
+
 include("Utils.jl")
 export setOffset!, LogVol2Covs, LogVol2Covs!
 
