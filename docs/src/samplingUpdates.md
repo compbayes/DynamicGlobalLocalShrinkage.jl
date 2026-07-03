@@ -9,5 +9,4 @@ Updateξ
 UpdateμNC
 Updateσ²ₙ
 update_dsp!
-update_homoscedastic_uni!
 ```
