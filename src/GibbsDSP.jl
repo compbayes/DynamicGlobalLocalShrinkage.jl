@@ -58,7 +58,7 @@ end
 # Log conditional posterior for ϕ under grouped likelihood, used in slice sampling
 function logpost_ϕ(ϕ, h, ξ, μ̄, σ²ₙ, ϕ₀, κ₀, groupsize)
     ϕ̄ = ϕ^groupsize # scalar here
-    scalevar = ((1 - ϕ̄^2) / (1 - ϕ^2))^2
+    scalevar = (1 - ϕ̄^2) / (1 - ϕ^2)
     σ̄²ₙ = scalevar * σ²ₙ
     mean_h = μ̄ .+ ϕ̄ .* (h[1:end-1] .- μ̄)
     stdev_h = sqrt.(σ̄²ₙ ./ ξ[2:end])
@@ -76,7 +76,7 @@ function update_dsp!(groupsize::Int, ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prio
 
     μ̄ = μ .+ log(groupsize)                             # group-level mean
     ϕ̄ = ϕ .^ groupsize                                  # group-level AR coefficient
-    scalevar = @. ((1 - ϕ̄^2) / (1 - ϕ^2))^2
+    scalevar = @. (1 - ϕ̄^2) / (1 - ϕ^2)
     σ̄²ₙ = scalevar .* σ²ₙ      # group-level variance in Z | ξ
 
     for k in 1:p
@@ -96,7 +96,7 @@ function update_dsp!(groupsize::Int, ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prio
                 prior.ϕ₀, prior.κ₀, groupsize), ϕ[k]; lower=-0.999, upper=0.999)
 
         ϕ̄ = ϕ .^ groupsize
-        scalevar = @. ((1 - ϕ̄^2) / (1 - ϕ^2))^2
+        scalevar = @. (1 - ϕ̄^2) / (1 - ϕ^2)
 
         # Update the variance in the logvariance evolution
         if updateσₙ
