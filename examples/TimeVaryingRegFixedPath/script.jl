@@ -73,9 +73,9 @@ pltline
 
 # ### Set up the prior, model and algorithm settings
 priorSettings = (
-    ϕ₀ = 0.5, κ₀ = 0.3,         # Prior for ϕ ~ N(ϕ₀, κ₀²)
-    m₀ = -12.0, σ₀ = 3.0,       # Prior for μ ~ N(m₀, σ₀²)
-    ν₀ = 3.0, ψ₀ = 1.0,         # Prior for σ²ₙ ~ scaled inverse χ²(ν₀, ψ₀)
+    ϕ₀ = 0.5*ones(p), κ₀ = 0.3*ones(p),         # Prior for ϕ ~ N(ϕ₀, κ₀²)
+    m₀ = -12.0*ones(p), σ₀ = 3.0*ones(p),       # Prior for μ ~ N(m₀, σ₀²)
+    ν₀ = 3.0*ones(p), ψ₀ = 1.0*ones(p),         # Prior for σ²ₙ ~ scaled inverse χ²(ν₀, ψ₀)
     μ₀ = zeros(p), Σ₀ = 10*I(p),# Prior for βₜ at time t=0
     νₑ = 3, ψ²ₑ = 0.3^2,       # Prior for noise variance σ²ₑ ~ scaled inverse χ²(νₑ, ψ²ₑ)
 ); 
@@ -105,15 +105,15 @@ function GibbsSamplerTvRegDSP(y, X, priorSettings, modelSettings, algoSettings)
     ## Initial values
     p = size(X,2)           # only the errors follow a dynamic shrinkage process
     S = zeros(Int, T, p)    # Mixture allocation for logχ²₁ - this is updated first
-    μ = fill(m₀, p)
+    μ = m₀
     if updateσₙ
-        σ²ₙ = fill(ψ₀, p)
+        σ²ₙ = ψ₀
     else
         σ²ₙ = fill(1.0, p)
     end
     
-    ϕ = fill(ϕ₀, p)
-    H = fill(m₀, T, p)
+    ϕ = ϕ₀
+    H = repeat(m₀', T)
     H̃ = H .- μ'
     ξ = ones(T, p)
     θ = zeros(T+1, p) # Regression coefficients evolution

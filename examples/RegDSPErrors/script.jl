@@ -64,9 +64,9 @@ p3
 
 # ### Set up the prior, model and algorithm settings
 priorSettings = (
-    ϕ₀ = 0.5, κ₀ = 0.3,     # Prior for ϕ ~ N(ϕ₀, κ₀²)
-    m₀ = -5.0, σ₀ = 3.0,    # Prior for μ ~ N(m₀, σ₀²)
-    ν₀ = 3.0, ψ₀ = 1.0,     # Prior for σ²ₙ ~ scaled inverse χ²(ν₀, ψ₀)
+    ϕ₀ = 0.5*ones(1), κ₀ = 0.3*ones(1),     # Prior for ϕ ~ N(ϕ₀, κ₀²)
+    m₀ = -5.0*ones(1), σ₀ = 3.0*ones(1),    # Prior for μ ~ N(m₀, σ₀²)
+    ν₀ = 3.0*ones(1), ψ₀ = 1.0*ones(1),     # Prior for σ²ₙ ~ scaled inverse χ²(ν₀, ψ₀)
 ); 
 modelSettings = (
     α = 1/2,          # First shape param in Z distribution
@@ -95,15 +95,15 @@ function GibbsSamplerRegressionDSPErrors(y, X, priorSettings, modelSettings, alg
     p = 1                   # only the errors follow a dynamic shrinkage process
     q = size(X, 2)          # Number of β coefficients
     S = zeros(Int, T, p)    # Mixture allocation for logχ²₁ - this is updated first
-    μ = fill(m₀, p)
+    μ = m₀
     if updateσₙ
-        σ²ₙ = fill(ψ₀, p)
+        σ²ₙ = ψ₀
     else
         σ²ₙ = fill(1.0, p)
     end
     
-    ϕ = fill(ϕ₀, p)
-    H = fill(m₀, T, p)
+    ϕ = ϕ₀
+    H = repeat(m₀', T)
     H̃ = H .- μ'
     ξ = ones(T, p)
     βreg = zeros(p) # Regression coefficients

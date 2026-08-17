@@ -40,15 +40,15 @@ function update_dsp!(ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prior, mix, Dᵩ,
         ξ[:, k] = Updateξ(H[:, k], ϕ[k], σ²ₙ[k], μ[k], α, β)
 
         # Update the AR coefficient in the logvariance evolution
-        ϕ[k] = Updateϕ(H[:, k], ξ[:, k], μ[k], σ²ₙ[k], prior.ϕ₀, prior.κ₀)
+        ϕ[k] = Updateϕ(H[:, k], ξ[:, k], μ[k], σ²ₙ[k], prior.ϕ₀[k], prior.κ₀[k])
 
         # Update the variance in the logvariance evolution
         if updateσₙ
-            σ²ₙ[k] = Updateσ²ₙ(H[:, k], ξ[:, k], ϕ[k], μ[k], prior.ν₀, prior.ψ₀)
+            σ²ₙ[k] = Updateσ²ₙ(H[:, k], ξ[:, k], ϕ[k], μ[k], prior.ν₀[k], prior.ψ₀[k])
         end
 
         # Update the mean in the logvariance evolution - centered parameterization
-        μ[k] = Updateμ(H[:, k], ξ[:, k], ϕ[k], σ²ₙ[k], prior.m₀, prior.σ₀)
+        μ[k] = Updateμ(H[:, k], ξ[:, k], ϕ[k], σ²ₙ[k], prior.m₀[k], prior.σ₀[k])
         H̃[:, k] = H[:, k] .- μ[k] # Transform back to non-centered parameterization
     end
 
@@ -93,7 +93,7 @@ function update_dsp!(groupsize::Int, ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prio
 
         # Update the AR coefficient in the logvariance evolution
         ϕ[k] = slice_sample_bounded(ϕ -> logpost_ϕ(ϕ, H[:, k], ξ[:, k], μ̄[k], σ²ₙ[k],
-                prior.ϕ₀, prior.κ₀, groupsize), ϕ[k]; lower=-0.999, upper=0.999)
+                prior.ϕ₀[k], prior.κ₀[k], groupsize), ϕ[k]; lower=-0.999, upper=0.999)
 
         ϕ̄ = ϕ .^ groupsize
         scalevar = @. (1 - ϕ̄^2) / (1 - ϕ^2)
@@ -101,13 +101,13 @@ function update_dsp!(groupsize::Int, ν, S, P, H, H̃, ξ, ϕ, μ, σ²ₙ, prio
         # Update the variance in the logvariance evolution
         if updateσₙ
             σ²ₙ[k] = Updateσ²ₙ(H[:, k], ξ[:, k] / scalevar[k], ϕ̄[k], μ̄[k],
-                prior.ν₀, prior.ψ₀)
+                prior.ν₀[k], prior.ψ₀[k])
         end
         σ̄²ₙ = scalevar .* σ²ₙ
 
         # Update the mean in the logvariance evolution - centered parameterization
         μ[k] = Updateμ(H[:, k] .- log(groupsize), ξ[:, k], ϕ̄[k], σ̄²ₙ[k],
-            prior.m₀, prior.σ₀)
+            prior.m₀[k], prior.σ₀[k])
         μ̄[k] = μ[k] + log(groupsize)
 
         H̃[:, k] = H[:, k] .- μ̄[k] # Transform back to non-centered parameterization

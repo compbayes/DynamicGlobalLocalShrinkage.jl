@@ -58,9 +58,9 @@ plot(p1, p2, layout=(1, 2), size=(800, 300), xguidefontsize=12,
 
 # ### Set up the prior, model and algorithm settings
 priorSettings = (
-    ϕ₀=0.5, κ₀=0.3,         # Prior for ϕ ~ N(ϕ₀, κ₀²)
-    m₀=-10.0, σ₀=3.0,       # Prior for μ ~ N(m₀, σ₀²)
-    ν₀=3.0, ψ₀=1.0,         # Prior for σ²ₙ ~ scaled inverse χ²(ν₀, ψ₀)
+    ϕ₀=0.5*ones(1), κ₀=0.3*ones(1),         # Prior for ϕ ~ N(ϕ₀, κ₀²)
+    m₀=-10.0*ones(1), σ₀=3.0*ones(1),       # Prior for μ ~ N(m₀, σ₀²)
+    ν₀=3.0*ones(1), ψ₀=1.0*ones(1),         # Prior for σ²ₙ ~ scaled inverse χ²(ν₀, ψ₀)
     μ₀=[0.0;;], Σ₀=[10.0;;],    # Prior for the local mean at time t=0
     νₑ=3.0, ψ²ₑ=var(y),       # Prior for noise variance σ²ₑ ~ scaled inverse χ²(νₑ, ψ²ₑ)
 );
@@ -90,15 +90,15 @@ function GibbsSamplerLocalLevelDSP(y, priorSettings, modelSettings, algoSettings
     ## Initial values
     p = 1                   # the number of states (only one in local level)
     S = zeros(Int, T, p)    # Mixture allocation for logχ²₁ - this is updated first
-    μ = fill(m₀, p)
+    μ = m₀
     if updateσₙ
-        σ²ₙ = fill(ψ₀, p)
+        σ²ₙ = ψ₀
     else
         σ²ₙ = fill(1.0, p)
     end
 
-    ϕ = fill(ϕ₀, p)
-    H = fill(m₀, T, p)
+    ϕ = ϕ₀
+    H = repeat(m₀', T)
     H̃ = H .- μ'
     ξ = ones(T, p)
     θ = zeros(T + 1, 1) # state evolution
