@@ -9,7 +9,11 @@ function update_homoscedastic_uni!(ν, H, ζ₀, λ²₀)
     T, p = size(ν)
     for k = 1:p
         ζₙ = ζ₀ + T
-        λ²ₙ = (ζ₀ * λ²₀ + sum(ν[:, k] .^ 2)) / ζₙ
-        H[:, k] .= log.(rand(ScaledInverseChiSq(ζₙ, λ²ₙ)))
+        λ²ₙ = (ζ₀ .* λ²₀ .+ sum(ν[:, k] .^ 2)) / ζₙ
+
+        for k = 1:p
+            H[:, k] .= log.(rand(ScaledInverseChiSq(ζₙ, λ²ₙ[k])))
+        end
+       # H[:, k] .= log.(rand(ScaledInverseChiSq.(ζₙ, λ²ₙ)))
     end
 end
